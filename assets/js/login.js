@@ -36,13 +36,32 @@ $(function () {
             username: $('#form_reg [name=username]').val(),
             password: $('#form_reg [name=password]').val()
         };
-        $.post('http://ajax.frontend.itheima.net/api/reguser', data, function (res) {
+        $.post('/api/reguser', data, function (res) {
             // 3. 响应成功后处理
             if (res.status !== 0) {
                 return layer.msg(res.message);
             }
             layer.msg('注册成功，请登录！');
             $('#link_login').click();
+        });
+    });
+
+    // 监听登录表单的提交事件
+    $('#form_login').submit(function (e) {
+        e.preventDefault();
+        // username=ifer&password=iferifer
+        $.ajax({
+            method: 'POST',
+            url: '/api/login',
+            data: $(this).serialize(),
+            success: function (res) {
+                if (res.status !== 0) {
+                    return layer.msg('登录失败！');
+                }
+                layer.msg('登录成功！');
+                localStorage.setItem('token', res.token); // token 存储到 localStorage 中
+                location.href = '/index.html';
+            }
         });
     });
 });

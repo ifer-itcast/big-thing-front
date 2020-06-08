@@ -1,5 +1,20 @@
 $(function () {
     getUserInfo();
+    const layer = layui.layer;
+    // 退出
+    $('#btnLogout').on('click', function () {
+        layer.confirm('确定退出登录?', {
+            icon: 3,
+            title: '提示'
+        }, function (index) {
+            // 1. 清空本地存储中的 token
+            localStorage.removeItem('token');
+            // 2. 重新跳转到登录页
+            location.href = '/login.html';
+            // 3. 关闭对应的弹出层
+            layer.close(index);
+        });
+    });
 });
 
 // 获取用户的基本信息

@@ -29,7 +29,16 @@ function getUserInfo() {
                 return layui.layer.msg('获取用户信息失败！');
             }
             renderAvatar(res.data);
-        }
+        },
+        // 成功失败都会走这里
+        /* complete: function (res) {
+            if (res.responseJSON.status === 1 && res.responseJSON.message === "身份认证失败！") {
+                // 1. 强制清空 token（如果有虚假或者过期的token）
+                localStorage.removeItem('token');
+                // 2. 强制跳转到登录页面
+                location.href = "/login.html";
+            }
+        } */
     });
 }
 

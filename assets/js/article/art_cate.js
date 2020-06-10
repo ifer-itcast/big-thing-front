@@ -61,7 +61,7 @@ $(function () {
             }
         });
     });
-
+    // 通过代理的方式为修改表单绑定 submit 事件
     $('body').on('submit', '#form-edit', function (e) {
         e.preventDefault();
         $.ajax({
@@ -76,6 +76,27 @@ $(function () {
                 layer.close(indexEdit);
                 initArtCateList();
             }
+        });
+    });
+
+    // 通过代理的形式为删除文章分类绑定点击事件
+    $('body').on('click', '.btn-delete', function () {
+        const id = $(this).attr('data-id');
+        layer.confirm('确认删除？', {
+            icon: 3,
+            title: '提示'
+        }, function (index) {
+            $.ajax({
+                url: '/my/article/deletecate/' + id,
+                success: function (res) {
+                    if (res.status !== 0) {
+                        return layer.msg('删除分类失败！');
+                    }
+                    layer.msg('删除分类成功！');
+                    layer.close(index);
+                    initArtCateList();
+                }
+            });
         });
     });
 });

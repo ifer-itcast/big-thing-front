@@ -1,6 +1,7 @@
 $(function () {
     const layer = layui.layer;
     const form = layui.form;
+    const laypage = layui.laypage;
 
     template.defaults.imports.dateFormat = function (date) {
         const dt = new Date(date);
@@ -36,6 +37,8 @@ $(function () {
                 }
                 const htmlStr = template('tpl-table', res.data);
                 $('tbody').html(htmlStr);
+                // 调用渲染分页的方法
+                renderPage(res.total);
             }
         });
     }
@@ -58,4 +61,41 @@ $(function () {
     }
 
     initCate();
+
+    // 为筛选表单绑定 submit 事件
+    $('#form-search').on('submit', function (e) {
+        e.preventDefault();
+        // 获取表单中选中项的值
+        const cate_id = $('[name=cate_id]').val();
+        const state = $('[name=state]').val();
+        q.cate_id = cate_id;
+        q.state = state;
+        // 根据最新的筛选条件重新渲染数据
+        initTable();
+    });
+
+    // 定义渲染分页的方法
+    function renderPage(total) {
+        laypage.render({
+            elem: 'pageBox', // 分页容器的 ID
+            count: total, // 总数据条数
+            limit: q.pagesize, // 每页显示几条数据
+            curr: q.pagenum, // 设置默认被选中的页码
+            layout: ['count', 'limit', 'prev', 'page', 'next', 'skip'],
+            limits: [2, 3, 5, 10],
+            jump: function (obj, first) {
+                // 分页发生切换的时候，会触发 jump
+                // 把最新的页码值，赋值到 q 这个查询参数对象中
+                q.pagenum = obj.curr;
+                q.pagesize = obj.limit;
+                // 根据最新的 q 获取对应的数据列表，并渲染表格
+                if (!first) {
+                    initTable();
+                }
+            }
+        });
+    }
+
+
+
 });

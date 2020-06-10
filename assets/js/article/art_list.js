@@ -97,5 +97,24 @@ $(function () {
     }
 
 
-
+    // 通过代理的方式为删除按钮绑定点击事件
+    $('tbody').on('click', '.btn-delete', function () {
+        const id = $(this).attr('data-id');
+        layer.confirm('确认删除？', {
+            icon: 3,
+            title: '提示'
+        }, function (index) {
+            $.ajax({
+                url: '/my/article/delete/' + id,
+                success: function (res) {
+                    if (res.status !== 0) {
+                        return layer.msg('删除文章失败！');
+                    }
+                    layer.msg('删除文章成功！');
+                    initTable();
+                }
+            });
+            layer.close(index);
+        });
+    });
 });

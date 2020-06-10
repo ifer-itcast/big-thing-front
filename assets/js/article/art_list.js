@@ -100,6 +100,8 @@ $(function () {
     // 通过代理的方式为删除按钮绑定点击事件
     $('tbody').on('click', '.btn-delete', function () {
         const id = $(this).attr('data-id');
+        // 获取删除按钮的个数
+        const len = $('.btn-delete').length;
         layer.confirm('确认删除？', {
             icon: 3,
             title: '提示'
@@ -111,6 +113,11 @@ $(function () {
                         return layer.msg('删除文章失败！');
                     }
                     layer.msg('删除文章成功！');
+                    // 当数据删除完成后，如果当前页没有剩余的数据了，需要让页码值减1
+                    if (len === 1) { // 证明删完后页面就没有数据了
+                        // 页码值最小必须是 1
+                        q.pagenum = q.pagenum === 1 ? 1 : q.pagenum - 1;
+                    }
                     initTable();
                 }
             });

@@ -32,10 +32,11 @@ $(function () {
             url: '/my/article/list',
             data: q,
             success: function (res) {
+                console.log(res, 233);
                 if (res.status !== 0) {
                     return layer.msg('获取文章列表失败！');
                 }
-                const htmlStr = template('tpl-table', res.data);
+                const htmlStr = template('tpl-table', res);
                 $('tbody').html(htmlStr);
                 // 调用渲染分页的方法
                 renderPage(res.total);

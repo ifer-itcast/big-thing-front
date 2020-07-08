@@ -72,7 +72,7 @@ $(function () {
             .toBlob(function (blob) { // 将 Canvas 画布上的内容，转化为文件对象
                 // 得到文件对象后，进行后续的操作
                 fd.append('cover_img', blob);
-                publishArticle();
+                publishArticle(fd);
             });
     });
 

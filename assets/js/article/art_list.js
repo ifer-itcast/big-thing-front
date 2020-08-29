@@ -34,7 +34,29 @@ $(function () {
                 if (res.status !== 0) {
                     return layer.msg('获取文章列表失败！');
                 }
-                const htmlStr = template('tpl-table', res.data);
+                if (!res.data.length) {
+                    res = {
+                        status: 0,
+                        message: "获取文章列表成功！",
+                        data: [{
+                                Id: 1,
+                                title: "abab",
+                                pub_date: "2020-01-03 12:19:57.690",
+                                state: "已发布",
+                                cate_name: "最新"
+                            },
+                            {
+                                Id: 2,
+                                title: "666",
+                                pub_date: "2020-01-03 12:20:19.817",
+                                state: "已发布",
+                                cate_name: "股市"
+                            }
+                        ],
+                        total: 5
+                    };
+                }
+                const htmlStr = template('tpl-table', res);
                 $('tbody').html(htmlStr);
             }
         });
@@ -56,6 +78,7 @@ $(function () {
             }
         });
     }
+
 
     initCate();
 });

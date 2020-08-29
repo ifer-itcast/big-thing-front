@@ -35,6 +35,7 @@ $(function () {
                 if (res.status !== 0) {
                     return layer.msg('新增分类失败！');
                 }
+                initArtCateList();
                 layer.msg('新增分类成功！');
                 layer.close(indexAdd); // 根据索引关闭对应的弹出层
             }
